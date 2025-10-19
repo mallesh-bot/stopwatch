@@ -225,6 +225,20 @@ function reset() {
 
   if ($id("record-table-body")) $id("record-table-body").innerHTML = "";
   lapCounter = 1;
+
+    // CLEAR COUNTDOWN INPUT & PRESETS
+  const countdownInput = $id("countdown-minutes");
+  if (countdownInput) {
+    countdownInput.value = "";
+    countdownInput.style.border = "2px solid rgba(255, 255, 255, 0.3)";
+    countdownInput.style.background = "rgba(255, 255, 255, 0.08)";
+    countdownInput.style.color = "white";
+    countdownInput.style.transform = "scale(1)";
+  }
+
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
   
   // Clear saved state
   localStorage.removeItem('stopwatchState');
@@ -520,7 +534,6 @@ function setPresetTimer(minutes) {
     input.style.color = "white";
   }, 300);
 }
-
 // ============================================
 // VOICE COMMAND CONTROL (NEW FEATURE)
 // ============================================
@@ -600,7 +613,7 @@ function initializeVoiceControl() {
     };
 
     recognition.onend = function() {
-        // Automatically restart listening if the mode is still stopwatch
+     
         if (mode === 'stopwatch') {
              recognition.start();
         } else if (voiceStatus) {
@@ -608,6 +621,41 @@ function initializeVoiceControl() {
         }
     };
 
-    // Start recognition automatically
     recognition.start();
 }
+document.addEventListener('keydown', function(event) {
+    switch(event.key.toLowerCase()) {
+        case ' ':
+            event.preventDefault();
+            startPauseStopwatch(); 
+            break;
+        case 'r':
+            resetStopwatch();
+            break;
+        case 'l':
+            recordLap();
+            break;
+        case 'c':
+            startCountdownTimer();
+            break;
+    }
+});
+function startPauseStopwatch() {
+    start();
+}
+function resetStopwatch() {
+    reset();
+}
+function recordLap() {
+    lap();
+}
+function startCountdownTimer() {
+    if (mode === "countdown") {
+        document.getElementById("start-countdown").click();
+    } else {
+        mode = "countdown";
+        countdownBtn.click();
+        document.getElementById("start-countdown").click();
+    } 
+}
+
