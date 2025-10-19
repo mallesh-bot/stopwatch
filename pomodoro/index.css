@@ -8,6 +8,12 @@ body {
   padding: 0;
   font-family: 'Roboto', sans-serif;
 }
+/*
+.active {
+    color: #fff;
+    background: transparent;
+    transition: background-color 0.5s ease;
+}*/
 
 #link--active {
   box-shadow: none;
@@ -78,7 +84,7 @@ body {
 }
 
 .counter-background {
-  background: rgb(1, 47, 99)
+  /*background: transparent;*/
 }
 
 .hide {
