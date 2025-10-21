@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Music Playlist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2c5364 0%, #203a43 50%, #0f2027 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            padding-bottom: 300px;
+        }
+
+        header {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        header::before {
+            content: "🎵 ";
+        }
+
+        .notice {
+            background: rgba(255, 140, 0, 0.3);
+            padding: 10px 20px;
+            width: 100%;
+            text-align: center;
+            color: #ff8c00;
+            font-size: 14px;
+        }
+
+        .player-container {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn {
+            background: #4a9eff;
+            color: white;
+            width: 200px;
+            border-radius: 10px;
+            font-size: 16px;
+            padding: 15px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .volume-icon {
+            font-size: 24px;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            height: 8px;
+            border-radius: 5px;
+            background: #444;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+            border: none;
+        }
+
+        .time-display {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .shortcuts {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .playlist-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .playlist-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .playlist-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .playlist-btn.active {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+
+        .playlist-btn::before {
+            content: "▶ ";
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .made-with {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .heart {
+            color: #ff1744;
+            font-size: 20px;
+        }
+
+        .contact-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .contact-btn::before {
+            content: "✉ ";
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .github {
+            color: #000;
+        }
+
+        .linkedin {
+            color: #0077b5;
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .calendar-btn {
+            background: white;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .calendar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .calendar-btn::before {
+            content: "📅 ";
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                flex-wrap: wrap;
+            }
+
+            .playlist-buttons {
+                flex-direction: column;
+            }
+
+            .volume-control input[type="range"] {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>🎵 Focus Music Playlist</header>
+    
+    <div class="notice">Click the play button to start music (browser autoplay blocked)</div>
+    
+    <div class="player-container">
+        <div class="controls">
+            <button title="Shuffle">🔀</button>
+            <button title="Previous">⏮</button>
+            <button class="play-btn" id="playBtn">⏸ Pause Focus Music</button>
+            <button title="Next">⏭</button>
+            <button title="Repeat">🔁</button>
+        </div>
+
+        <div class="volume-control">
+            <span class="volume-icon">🔉</span>
+            <input type="range" min="0" max="100" value="70" id="volume">
+            <span class="volume-icon">🔊</span>
+        </div>
+
+        <div class="time-display">0:00 / 3:45</div>
+
+        <div class="shortcuts">
+            Shortcuts: M=Play/Pause, N=Next, B=Previous, S=Shuffle, R=Repeat
+        </div>
+
+        <div class="playlist-buttons">
+            <button class="playlist-btn active">▶ Test Playlist 1.m3u</button>
+            <button class="playlist-btn">Load m3u</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="made-with">Made with <span class="heart">❤</span> by Avinash Singh</div>
+            
+            <button class="contact-btn">Contact Me</button>
+            
+            <div class="social-icons">
+                <a href="#" class="social-icon github">
+                    <span>🐙</span>
+                </a>
+                <a href="#" class="social-icon linkedin">
+                    <span>in</span>
+                </a>
+                <a href="#" class="social-icon instagram">
+                    <span>📷</span>
+                </a>
+            </div>
+            
+            <button class="calendar-btn">Add to Calendar</button>
+        </div>
+    </footer>
+
+   
+</body>
+</html>
